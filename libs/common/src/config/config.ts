@@ -1,15 +1,34 @@
 import { ConfigProps } from './config.interface';
+import * as Joi from 'Joi';
 
-export const config = (): ConfigProps => ({
-  port: parseInt(process.env.PORT, 10) || 8080,
-  api: {
-    apiUrl: process.env.API_URL || 'http://localhost:8080',
-    httpTimeout: parseInt(process.env.HTTP_TIMEOUT, 10) || 1000,
-  },
-  mongodb: {
-    database: {
-      connectionString: process.env.MONGODB_URI || 'mongodb://localhost:27017',
-      databaseName: process.env.MONGODB_DATABASE_NAME || 'local',
-    },
-  },
+const schema = Joi.object({
+  PORT: Joi.number().required(),
+  MONGODB_URI: Joi.string().required(),
+  API_URL: Joi.string().uri().required(),
+  HTTP_TIMEOUT: Joi.number().default(1000),
+  MONGODB_DATABASE_NAME: Joi.string().default('local'),
 });
+
+export const config = (): ConfigProps => {
+  const { error, value: envVars } = schema.validate(process.env, {
+    allowUnknown: true,
+  });
+
+  if (error) {
+    throw new Error(`Config validation error: ${error.message}`);
+  }
+
+  return {
+    port: parseInt(envVars.PORT, 10),
+    api: {
+      apiUrl: envVars.API_URL,
+      httpTimeout: parseInt(envVars.HTTP_TIMEOUT, 10),
+    },
+    mongodb: {
+      database: {
+        connectionString: envVars.MONGODB_URI,
+        databaseName: envVars.MONGODB_DATABASE_NAME,
+      },
+    },
+  };
+};

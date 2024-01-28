@@ -11,7 +11,9 @@ describe('ReservationsController', () => {
       providers: [ReservationsService],
     }).compile();
 
-    reservationsController = app.get<ReservationsController>(ReservationsController);
+    reservationsController = app.get<ReservationsController>(
+      ReservationsController,
+    );
   });
 
   describe('root', () => {

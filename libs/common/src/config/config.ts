@@ -1,5 +1,5 @@
 import { ConfigProps } from './config.interface';
-import * as Joi from 'Joi';
+import * as Joi from 'joi';
 
 const schema = Joi.object({
   PORT: Joi.number().required(),

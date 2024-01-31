@@ -8,7 +8,8 @@ import { ConfigService } from '../config/config.service';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('mongodb').database.connectionString,
+        uri: configService.get(`${process.env.SERVICE_NAME}`).databases.mongodb
+          .uri,
       }),
       inject: [ConfigService],
     }),

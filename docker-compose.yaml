@@ -2,21 +2,31 @@ services:
   mongo:
     image: mongo
   reservations:
+    environment:
+      - NODE_ENV=development
+      - SERVICE_NAME=reservations
     build:
       context: .
       dockerfile: ./apps/reservations/Dockerfile
       target: development
     command: yarn run start:dev reservations
+    env_file:
+      - ./apps/reservations/.env.development.local
     ports:
       - '5050:5050'
     volumes:
       - .:/usr/src/app
   auth:
+    environment:
+      - NODE_ENV=development
+      - SERVICE_NAME=auth
     build:
       context: .
       dockerfile: ./apps/auth/Dockerfile
       target: development
     command: yarn run start:dev auth
+    env_file:
+      - ./apps/auth/.env.development.local
     ports:
       - '5051:5051'
     volumes:

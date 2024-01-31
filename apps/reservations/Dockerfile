@@ -3,6 +3,9 @@ FROM node:alpine as development
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
+ARG SERVICE_NAME=reservations
+ENV SERVICE_NAME=${SERVICE_NAME}
+
 WORKDIR /usr/src/app
 
 COPY package.json ./
@@ -19,6 +22,9 @@ FROM node:alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
+
+ARG SERVICE_NAME=reservations
+ENV SERVICE_NAME=${SERVICE_NAME}
 
 WORKDIR /usr/src/app
 

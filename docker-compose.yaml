@@ -8,6 +8,6 @@ services:
       target: development
     command: yarn run start:dev reservations
     ports:
-      - '8080:8080'
+      - '5050:5050'
     volumes:
       - .:/usr/src/app

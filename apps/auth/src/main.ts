@@ -16,7 +16,7 @@ async function bootstrap() {
   await app.listen(PORT, () => {
     console.log(
       `Server is active and listening on port ${PORT} at ${
-        app.get(ConfigService).get('auth').port
+        app.get(ConfigService).get('auth').api
       } as of ${new Date().toLocaleString()}`,
     );
   });

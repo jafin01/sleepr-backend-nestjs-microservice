@@ -103,12 +103,6 @@ export class ConfigService {
     console.log(key);
     console.log(this.envConfig);
     const value = this.envConfig[key];
-<<<<<<< Updated upstream
-
-    console.log(value);
-=======
-    console.log('value', +value);
->>>>>>> Stashed changes
 
     if (value === undefined) {
       throw new Error(`Config error - ${key} is undefined`);

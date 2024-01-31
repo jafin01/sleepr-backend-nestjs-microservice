@@ -29,5 +29,7 @@ services:
       - ./apps/auth/.env.development.local
     ports:
       - '5051:5051'
+    ports:
+      - '8080:8080'
     volumes:
       - .:/usr/src/app

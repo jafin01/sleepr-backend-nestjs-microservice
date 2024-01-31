@@ -1,5 +1,6 @@
 export interface ApiConfigProps {
-  apiUrl: string;
+  reservation: string;
+  auth: string;
   httpTimeout: number;
 }
 
@@ -8,8 +9,13 @@ export interface MongodbConfigProps {
   databaseName: string;
 }
 
+export interface PortConfigProps {
+  reservation: number;
+  auth: number;
+}
+
 export interface ConfigProps {
-  port: number;
+  port: PortConfigProps;
   api: ApiConfigProps;
   mongodb: {
     database: MongodbConfigProps;

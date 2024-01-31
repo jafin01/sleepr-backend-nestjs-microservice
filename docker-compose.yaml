@@ -11,3 +11,13 @@ services:
       - '5050:5050'
     volumes:
       - .:/usr/src/app
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: yarn run start:dev auth
+    ports:
+      - '5051:5051'
+    volumes:
+      - .:/usr/src/app

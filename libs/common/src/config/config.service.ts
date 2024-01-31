@@ -17,6 +17,8 @@ export class ConfigService {
   get(key: string): any {
     const value = this.envConfig[key];
 
+    console.log('value', +value);
+
     if (value === undefined) {
       throw new Error(`Config error - ${key} is undefined`);
     }

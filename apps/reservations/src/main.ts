@@ -13,12 +13,12 @@ async function bootstrap() {
     }),
   );
   app.useLogger(app.get(Logger));
-  await app.listen(app.get(ConfigService).get('port'), () =>
+  await app.listen(app.get(ConfigService).get('port').reservation, () =>
     console.log(
-      `Server is active and listening on port ${app
-        .get(ConfigService)
-        .get('port')} at ${
-        app.get(ConfigService).get('api').apiUrl
+      `Server is active and listening on port ${
+        app.get(ConfigService).get('port').reservation
+      } at ${
+        app.get(ConfigService).get('api').reservation
       } as of ${new Date().toLocaleString()}`.cyan.underline,
     ),
   );

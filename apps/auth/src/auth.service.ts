@@ -12,7 +12,7 @@ export class AuthService {
   ) {}
 
   async login(user: UserDocument, response: Response) {
-    const payload = { username: user.email };
+    const payload = { userId: user._id.toHexString() };
 
     const expires = new Date();
     expires.setSeconds(

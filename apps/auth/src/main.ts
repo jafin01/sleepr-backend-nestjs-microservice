@@ -14,11 +14,11 @@ async function bootstrap() {
     }),
   );
   app.useLogger(app.get(Logger));
-  const PORT = app.get(ConfigService).get('auth').port;
+  const PORT = app.get(ConfigService).get('auth').httpPort;
   await app.listen(PORT, () => {
     console.log(
       `Server is active and listening on port ${PORT} at ${
-        app.get(ConfigService).get('auth').api
+        app.get(ConfigService).get('auth').httpHost
       } as of ${new Date().toLocaleString()}`,
     );
   });

@@ -9,6 +9,7 @@ dotenv.config({
 @Injectable()
 export class ConfigService {
   private readonly envConfig: ConfigProps;
+  private currentServiceName = process.env.SERVICE_NAME;
 
   constructor() {
     const serviceName = process.env.SERVICE_NAME;
@@ -34,9 +35,11 @@ export class ConfigService {
   private loadReservationsConfig(): ReservationProps {
     const schema = Joi.object({
       SERVICE_NAME: Joi.string().required(),
-      PORT: Joi.number().required(),
+      HTTP_PORT: Joi.number().required(),
       HTTP_TIMEOUT: Joi.number().default(1000),
-      API_URL: Joi.string().uri().required(),
+      AUTH_PORT: Joi.number().required(),
+      AUTH_HOST: Joi.string().required(),
+      HTTP_HOST: Joi.string().required(),
       MONGODB_URI: Joi.string().required(),
       MONGODB_DATABASE_NAME: Joi.string().default('local'),
     });
@@ -50,9 +53,11 @@ export class ConfigService {
     }
 
     return {
-      port: parseInt(envVars.PORT, 10),
-      api: envVars.API_URL,
+      httpPort: parseInt(envVars.HTTP_PORT, 10),
+      httpHost: envVars.HTTP_HOST,
       httpTimeout: parseInt(envVars.HTTP_TIMEOUT, 10),
+      authPort: parseInt(envVars.AUTH_PORT, 10),
+      authHost: envVars.AUTH_HOST,
       databases: {
         mongodb: {
           uri: envVars.MONGODB_URI,
@@ -65,9 +70,10 @@ export class ConfigService {
   private loadAuthConfig(): AuthProps {
     const schema = Joi.object({
       SERVICE_NAME: Joi.string().required(),
-      PORT: Joi.number().required(),
+      HTTP_PORT: Joi.number().required(),
+      TCP_PORT: Joi.number().required(),
       HTTP_TIMEOUT: Joi.number().default(1000),
-      API_URL: Joi.string().uri().required(),
+      HTTP_HOST: Joi.string().required(),
       JWT_SECRET: Joi.string().required(),
       JWT_EXPIRES_IN: Joi.string().required(),
       MONGODB_URI: Joi.string().required(),
@@ -83,8 +89,9 @@ export class ConfigService {
     }
 
     return {
-      port: parseInt(value.PORT, 10),
-      api: value.API_URL,
+      httpPort: parseInt(value.HTTP_PORT, 10),
+      httpHost: value.HTTP_HOST,
+      tcpPort: parseInt(value.TCP_PORT, 10),
       httpTimeout: parseInt(value.HTTP_TIMEOUT, 10),
       jwt: {
         secret: value.JWT_SECRET,
@@ -100,6 +107,11 @@ export class ConfigService {
   }
 
   get(key: string): any {
+    if (this.currentServiceName !== key) {
+      throw new Error(
+        `Access denied: cannot access ${key} configurations from ${this.currentServiceName}`,
+      );
+    }
     const value = this.envConfig[key];
 
     if (value === undefined) {

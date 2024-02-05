@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AuthProps, ConfigProps, ReservationProps } from './config.interface';
+import {
+  AuthProps,
+  ConfigProps,
+  PaymentProps,
+  ReservationProps,
+} from './config.interface';
 import * as dotenv from 'dotenv';
 import * as Joi from 'joi';
 dotenv.config({
@@ -25,6 +30,11 @@ export class ConfigService {
           auth: this.loadAuthConfig(),
         };
         break;
+      case 'payments':
+        this.envConfig = {
+          payments: this.loadPaymentConfig(),
+        };
+        break;
       default:
         throw new Error(
           `Config error - ${serviceName} is not a valid service name`,
@@ -39,6 +49,8 @@ export class ConfigService {
       HTTP_TIMEOUT: Joi.number().default(1000),
       AUTH_PORT: Joi.number().required(),
       AUTH_HOST: Joi.string().required(),
+      PAYMENTS_PORT: Joi.number().required(),
+      PAYMENTS_HOST: Joi.string().required(),
       HTTP_HOST: Joi.string().required(),
       MONGODB_URI: Joi.string().required(),
       MONGODB_DATABASE_NAME: Joi.string().default('local'),
@@ -58,6 +70,8 @@ export class ConfigService {
       httpTimeout: parseInt(envVars.HTTP_TIMEOUT, 10),
       authPort: parseInt(envVars.AUTH_PORT, 10),
       authHost: envVars.AUTH_HOST,
+      paymentsPort: parseInt(envVars.PAYMENTS_PORT, 10),
+      paymentsHost: envVars.PAYMENTS_HOST,
       databases: {
         mongodb: {
           uri: envVars.MONGODB_URI,
@@ -103,6 +117,27 @@ export class ConfigService {
           name: value.MONGODB_DATABASE_NAME,
         },
       },
+    };
+  }
+
+  private loadPaymentConfig(): PaymentProps {
+    const schema = Joi.object({
+      SERVICE_NAME: Joi.string().required(),
+      TCP_PORT: Joi.number().required(),
+      STRIPE_API_KEY: Joi.string().required(),
+    });
+
+    const { error, value: envVars } = schema.validate(process.env, {
+      allowUnknown: true,
+    });
+
+    if (error) {
+      throw new Error(`Config validation error: ${error.message}`);
+    }
+
+    return {
+      tcpPort: envVars.TCP_PORT,
+      stripeKey: envVars.STRIPE_API_KEY,
     };
   }
 

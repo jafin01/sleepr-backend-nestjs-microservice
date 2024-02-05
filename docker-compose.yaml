@@ -31,3 +31,18 @@ services:
       - '5051:5051'
     volumes:
       - .:/usr/src/app
+  payments:
+    environment:
+      - NODE_ENV=development
+      - SERVICE_NAME=payments
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+      target: development
+    command: yarn run start:dev payments
+    env_file:
+      - ./apps/payments/.env.development.local
+    ports:
+      - '5053:5053'
+    volumes:
+      - .:/usr/src/app

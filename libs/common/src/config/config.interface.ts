@@ -12,9 +12,17 @@ export interface ReservationProps {
   httpHost: string;
   authPort: number;
   authHost: string;
+  paymentsPort: number;
+  paymentsHost: string;
   httpTimeout: number;
   databases: DatabaseProps;
 }
+
+export interface PaymentProps {
+  tcpPort: number;
+  stripeKey: string;
+}
+
 export interface AuthProps {
   httpPort: number;
   tcpPort: number;
@@ -31,4 +39,5 @@ export interface ConfigProps {
   databases?: DatabaseProps;
   reservations?: ReservationProps;
   auth?: AuthProps;
+  payments?: PaymentProps;
 }

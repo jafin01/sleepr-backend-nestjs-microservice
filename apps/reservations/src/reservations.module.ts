@@ -6,6 +6,7 @@ import {
   ConfigService,
   DatabaseModule,
   LoggerModule,
+  PAYMENT_SERVICE,
 } from '@app/common';
 import { ReservationsRepository } from './reservations.repository';
 import {
@@ -33,6 +34,20 @@ import { AUTH_SERVICE } from '@app/common';
             options: {
               host: configService.get('reservations').authHost,
               port: configService.get('reservations').authPort,
+            },
+          };
+        },
+      },
+      {
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        name: PAYMENT_SERVICE,
+        useFactory: (configService: ConfigService) => {
+          return {
+            transport: Transport.TCP,
+            options: {
+              host: configService.get('reservations').paymentsHost,
+              port: configService.get('reservations').paymentsPort,
             },
           };
         },

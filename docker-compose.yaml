@@ -43,6 +43,6 @@ services:
     env_file:
       - ./apps/payments/.env.development.local
     ports:
-      - '5052:5052'
+      - '5053:5053'
     volumes:
       - .:/usr/src/app

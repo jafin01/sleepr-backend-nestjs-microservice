@@ -18,6 +18,11 @@ export class NotificationsService {
     },
   });
   sendEmailNotification(data: NotifyEmailDto) {
-    console.log('Sending email notification to', data.email);
+    this.transporter.sendMail({
+      from: this.configService.get('notifications').smtpUser,
+      to: data.email,
+      subject: 'Reservation Confirmation',
+      text: `Hello ${data.email}, your reservation has been confirmed.`,
+    });
   }
 }

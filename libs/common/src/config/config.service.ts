@@ -155,6 +155,10 @@ export class ConfigService {
     const schema = Joi.object({
       SERVICE_NAME: Joi.string().required(),
       TCP_PORT: Joi.number().required(),
+      SMTP_USER: Joi.string().required(),
+      GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
+      GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
+      GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
     });
 
     const { error, value: envVars } = schema.validate(process.env, {
@@ -167,6 +171,10 @@ export class ConfigService {
 
     return {
       tcpPort: envVars.TCP_PORT,
+      smtpUser: envVars.SMTP_USER,
+      smtpClientId: envVars.GOOGLE_OAUTH_CLIENT_ID,
+      smtpClientSecret: envVars.GOOGLE_OAUTH_CLIENT_SECRET,
+      smtpRefreshToken: envVars.GOOGLE_OAUTH_REFRESH_TOKEN,
     };
   }
 

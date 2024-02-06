@@ -39,6 +39,10 @@ export interface PaymentProps {
 
 export interface NotificationProps {
   tcpPort: number;
+  smtpUser: string;
+  smtpClientId: string;
+  smtpClientSecret: string;
+  smtpRefreshToken: string;
 }
 
 export interface ConfigProps {

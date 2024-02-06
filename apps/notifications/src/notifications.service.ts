@@ -17,12 +17,12 @@ export class NotificationsService {
       refreshToken: this.configService.get('notifications').smtpRefreshToken,
     },
   });
-  sendEmailNotification(data: NotifyEmailDto) {
+  sendEmailNotification({ email, message }: NotifyEmailDto) {
     this.transporter.sendMail({
       from: this.configService.get('notifications').smtpUser,
-      to: data.email,
+      to: email,
       subject: 'Reservation Confirmation',
-      text: `Hello ${data.email}, your reservation has been confirmed.`,
+      text: message,
     });
   }
 }

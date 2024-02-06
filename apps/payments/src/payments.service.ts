@@ -34,7 +34,10 @@ export class PaymentsService {
       return_url: 'https://example.com', //? change later
     });
 
-    this.notificationsService.emit('notify_email', { email });
+    this.notificationsService.emit('notify_email', {
+      email,
+      message: `Hello ${email}, Your payment of $${amount} is successfull and your reservation has been confirmed.`,
+    });
 
     return paymentIntent;
   }

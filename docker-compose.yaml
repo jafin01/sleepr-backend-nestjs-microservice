@@ -42,7 +42,18 @@ services:
     command: yarn run start:dev payments
     env_file:
       - ./apps/payments/.env.development.local
-    ports:
-      - '5053:5053'
+    volumes:
+      - .:/usr/src/app
+  notifications:
+    environment:
+      - NODE_ENV=development
+      - SERVICE_NAME=notifications
+    build:
+      context: .
+      dockerfile: ./apps/notifications/Dockerfile
+      target: development
+    command: yarn run start:dev notifications
+    env_file:
+      - ./apps/notifications/.env.development.local
     volumes:
       - .:/usr/src/app

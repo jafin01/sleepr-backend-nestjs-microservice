@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   AuthProps,
   ConfigProps,
+  NotificationProps,
   PaymentProps,
   ReservationProps,
 } from './config.interface';
@@ -33,6 +34,11 @@ export class ConfigService {
       case 'payments':
         this.envConfig = {
           payments: this.loadPaymentConfig(),
+        };
+        break;
+      case 'notifications':
+        this.envConfig = {
+          notifications: this.loadNotificationConfig(),
         };
         break;
       default:
@@ -141,12 +147,26 @@ export class ConfigService {
     };
   }
 
-  get(key: string): any {
-    if (this.currentServiceName !== key) {
-      throw new Error(
-        `Access denied: cannot access ${key} configurations from ${this.currentServiceName}`,
-      );
+  private loadNotificationConfig(): NotificationProps {
+    const schema = Joi.object({
+      SERVICE_NAME: Joi.string().required(),
+      TCP_PORT: Joi.number().required(),
+    });
+
+    const { error, value: envVars } = schema.validate(process.env, {
+      allowUnknown: true,
+    });
+
+    if (error) {
+      throw new Error(`Config validation error: ${error.message}`);
     }
+
+    return {
+      tcpPort: envVars.TCP_PORT,
+    };
+  }
+
+  get(key: string): any {
     const value = this.envConfig[key];
 
     if (value === undefined) {

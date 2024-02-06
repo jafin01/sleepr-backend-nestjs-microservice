@@ -131,6 +131,8 @@ export class ConfigService {
       SERVICE_NAME: Joi.string().required(),
       TCP_PORT: Joi.number().required(),
       STRIPE_API_KEY: Joi.string().required(),
+      NOTIFICATIONS_PORT: Joi.number().required(),
+      NOTIFICATIONS_HOST: Joi.string().required(),
     });
 
     const { error, value: envVars } = schema.validate(process.env, {
@@ -144,6 +146,8 @@ export class ConfigService {
     return {
       tcpPort: envVars.TCP_PORT,
       stripeKey: envVars.STRIPE_API_KEY,
+      notificationsPort: parseInt(envVars.NOTIFICATIONS_PORT, 10),
+      notificationsHost: envVars.NOTIFICATIONS_HOST,
     };
   }
 

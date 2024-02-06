@@ -33,6 +33,8 @@ export interface ReservationProps {
 export interface PaymentProps {
   tcpPort: number;
   stripeKey: string;
+  notificationsPort: number;
+  notificationsHost: string;
 }
 
 export interface NotificationProps {

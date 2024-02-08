@@ -1,0 +1,9 @@
+{
+  "name": "@sleepr/reservations",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jafin Jahfar",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

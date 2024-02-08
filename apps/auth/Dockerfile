@@ -6,14 +6,19 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-COPY yarn.lock ./
+COPY pnpm-lock.yaml ./
+COPY tsconfig.json tsconfig.json
 
-RUN if ! command -v yarn &> /dev/null; then npm install -g yarn; fi
-RUN yarn install
+RUN npm install -g pnpm
 
-COPY . .
+RUN pnpm install
 
-RUN yarn build
+COPY apps/auth apps/auth
+COPY libs libs
+
+RUN cd apps/auth && pnpm install
+
+RUN pnpm run build auth
 
 FROM node:alpine as production
 
@@ -23,12 +28,10 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-COPY yarn.lock ./
+COPY pnpm-lock.yaml ./
 
-RUN if ! command -v yarn &> /dev/null; then npm install -g yarn; fi
-RUN yarn install --production
-
-COPY . .
+RUN npm install -g pnpm
+RUN pnpm install --production
 
 COPY --from=development /usr/src/app/dist ./dist
 

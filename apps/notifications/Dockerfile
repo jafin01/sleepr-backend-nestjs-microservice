@@ -9,14 +9,18 @@ ENV SERVICE_NAME=${SERVICE_NAME}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-COPY yarn.lock ./
+COPY pnpm-lock.yaml ./
+COPY tsconfig.json tsconfig.json
 
-RUN if ! command -v yarn &> /dev/null; then npm install -g yarn; fi
-RUN yarn install
+RUN npm install -g pnpm
+RUN pnpm install
 
-COPY . .
+COPY apps/notifications apps/notifications
+COPY libs libs
 
-RUN yarn build
+RUN cd apps/notifications && pnpm install
+
+RUN pnpm run build notifications
 
 FROM node:alpine as production
 
@@ -29,12 +33,10 @@ ENV SERVICE_NAME=${SERVICE_NAME}
 WORKDIR /user/src/app
 
 COPY package*.json ./
-COPY yarn.lock ./
+COPY pnpm-lock.yaml ./
 
-RUN if ! command -v yarn &> /dev/null; then npm i -g yarn; fi
-RUN yarn install --production
-
-COPY . .
+RUN npm install -g pnpm
+RUN pnpm install --production
 
 COPY --from=development /usr/src/app/dist ./dist
 

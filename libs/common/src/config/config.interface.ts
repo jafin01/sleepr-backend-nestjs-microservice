@@ -7,6 +7,18 @@ export interface DatabaseProps {
   mongodb?: MongodbConfigProps;
 }
 
+export interface AuthProps {
+  httpPort: number;
+  tcpPort: number;
+  httpHost: string;
+  httpTimeout: number;
+  jwt: {
+    secret: string;
+    expiresIn: string;
+  };
+  databases: DatabaseProps;
+}
+
 export interface ReservationProps {
   httpPort: number;
   httpHost: string;
@@ -21,18 +33,16 @@ export interface ReservationProps {
 export interface PaymentProps {
   tcpPort: number;
   stripeKey: string;
+  notificationsPort: number;
+  notificationsHost: string;
 }
 
-export interface AuthProps {
-  httpPort: number;
+export interface NotificationProps {
   tcpPort: number;
-  httpHost: string;
-  httpTimeout: number;
-  jwt: {
-    secret: string;
-    expiresIn: string;
-  };
-  databases: DatabaseProps;
+  smtpUser: string;
+  smtpClientId: string;
+  smtpClientSecret: string;
+  smtpRefreshToken: string;
 }
 
 export interface ConfigProps {
@@ -40,4 +50,5 @@ export interface ConfigProps {
   reservations?: ReservationProps;
   auth?: AuthProps;
   payments?: PaymentProps;
+  notifications?: NotificationProps;
 }

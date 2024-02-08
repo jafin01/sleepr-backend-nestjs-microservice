@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   AuthProps,
   ConfigProps,
+  NotificationProps,
   PaymentProps,
   ReservationProps,
 } from './config.interface';
@@ -33,6 +34,11 @@ export class ConfigService {
       case 'payments':
         this.envConfig = {
           payments: this.loadPaymentConfig(),
+        };
+        break;
+      case 'notifications':
+        this.envConfig = {
+          notifications: this.loadNotificationConfig(),
         };
         break;
       default:
@@ -125,6 +131,8 @@ export class ConfigService {
       SERVICE_NAME: Joi.string().required(),
       TCP_PORT: Joi.number().required(),
       STRIPE_API_KEY: Joi.string().required(),
+      NOTIFICATIONS_PORT: Joi.number().required(),
+      NOTIFICATIONS_HOST: Joi.string().required(),
     });
 
     const { error, value: envVars } = schema.validate(process.env, {
@@ -138,15 +146,39 @@ export class ConfigService {
     return {
       tcpPort: envVars.TCP_PORT,
       stripeKey: envVars.STRIPE_API_KEY,
+      notificationsPort: parseInt(envVars.NOTIFICATIONS_PORT, 10),
+      notificationsHost: envVars.NOTIFICATIONS_HOST,
+    };
+  }
+
+  private loadNotificationConfig(): NotificationProps {
+    const schema = Joi.object({
+      SERVICE_NAME: Joi.string().required(),
+      TCP_PORT: Joi.number().required(),
+      SMTP_USER: Joi.string().required(),
+      GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
+      GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
+      GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
+    });
+
+    const { error, value: envVars } = schema.validate(process.env, {
+      allowUnknown: true,
+    });
+
+    if (error) {
+      throw new Error(`Config validation error: ${error.message}`);
+    }
+
+    return {
+      tcpPort: envVars.TCP_PORT,
+      smtpUser: envVars.SMTP_USER,
+      smtpClientId: envVars.GOOGLE_OAUTH_CLIENT_ID,
+      smtpClientSecret: envVars.GOOGLE_OAUTH_CLIENT_SECRET,
+      smtpRefreshToken: envVars.GOOGLE_OAUTH_REFRESH_TOKEN,
     };
   }
 
   get(key: string): any {
-    if (this.currentServiceName !== key) {
-      throw new Error(
-        `Access denied: cannot access ${key} configurations from ${this.currentServiceName}`,
-      );
-    }
     const value = this.envConfig[key];
 
     if (value === undefined) {

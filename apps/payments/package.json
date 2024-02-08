@@ -1,0 +1,13 @@
+{
+  "name": "@sleepr/payments",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jafin Jahfar",
+  "license": "MIT",
+  "dependencies": {
+    "stripe": "^14.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

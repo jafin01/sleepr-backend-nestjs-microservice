@@ -1,56 +1,61 @@
 steps:
-  # Reservations
+  # Setup buildx
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker buildx create --name mybuilder --use
+        docker buildx inspect --bootstrap
+
+  # Reservations multi-arch build and push
   - name: 'gcr.io/cloud-builders/docker'
     args:
+      - 'buildx'
       - 'build'
+      - '--platform=linux/amd64,linux/arm64'
       - '-t'
       - 'asia-south1-docker.pkg.dev/noted-cortex-413506/reservations/production'
       - '-f'
       - 'apps/reservations/Dockerfile'
       - '.'
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'asia-south1-docker.pkg.dev/noted-cortex-413506/reservations/production'
+      - '--push'
 
-  # Auth
+  # Auth multi-arch build and push
   - name: 'gcr.io/cloud-builders/docker'
     args:
+      - 'buildx'
       - 'build'
+      - '--platform=linux/amd64,linux/arm64'
       - '-t'
       - 'asia-south1-docker.pkg.dev/noted-cortex-413506/auth/production'
       - '-f'
       - 'apps/auth/Dockerfile'
       - '.'
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'asia-south1-docker.pkg.dev/noted-cortex-413506/auth/production'
+      - '--push'
 
-  # Notifications
+  # Notifications multi-arch build and push
   - name: 'gcr.io/cloud-builders/docker'
     args:
+      - 'buildx'
       - 'build'
+      - '--platform=linux/amd64,linux/arm64'
       - '-t'
       - 'asia-south1-docker.pkg.dev/noted-cortex-413506/notifications/production'
       - '-f'
       - 'apps/notifications/Dockerfile'
       - '.'
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'asia-south1-docker.pkg.dev/noted-cortex-413506/notifications/production'
+      - '--push'
 
-  # Payments
+  # Payments multi-arch build and push
   - name: 'gcr.io/cloud-builders/docker'
     args:
+      - 'buildx'
       - 'build'
+      - '--platform=linux/amd64,linux/arm64'
       - '-t'
       - 'asia-south1-docker.pkg.dev/noted-cortex-413506/payments/production'
       - '-f'
       - 'apps/payments/Dockerfile'
       - '.'
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'asia-south1-docker.pkg.dev/noted-cortex-413506/payments/production'
+      - '--push'

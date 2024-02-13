@@ -10,8 +10,6 @@ export interface DatabaseProps {
 export interface AuthProps {
   httpPort: number;
   tcpPort: number;
-  httpHost: string;
-  httpTimeout: number;
   jwt: {
     secret: string;
     expiresIn: string;
@@ -21,12 +19,10 @@ export interface AuthProps {
 
 export interface ReservationProps {
   httpPort: number;
-  httpHost: string;
   authPort: number;
   authHost: string;
   paymentsPort: number;
   paymentsHost: string;
-  httpTimeout: number;
   databases: DatabaseProps;
 }
 

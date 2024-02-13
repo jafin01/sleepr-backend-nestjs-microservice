@@ -24,12 +24,6 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   const PORT = app.get(ConfigService).get('auth').httpPort;
   app.startAllMicroservices();
-  await app.listen(PORT, () => {
-    console.log(
-      `Server is active and listening on port ${PORT} at ${
-        app.get(ConfigService).get('auth').httpHost
-      } as of ${new Date().toLocaleString()}`,
-    );
-  });
+  await app.listen(PORT);
 }
 bootstrap();

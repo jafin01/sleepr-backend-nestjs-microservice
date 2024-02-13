@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: notifications
+  name: notifications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications
+  template:
+    metadata:
+      labels:
+        app: notifications
+    spec:
+      containers:
+        - image: asia-south1-docker.pkg.dev/sleepr-413506/notifications/production
+          name: notifications
+          imagePullPolicy: Never
+          env:
+            - name: TCP_PORT
+              value: '3000'
+            - name: GOOGLE_OAUTH_CLIENT_ID
+              value: 932351990227-2eh2inv12a4t6g2mk18ik3nh6722rebk.apps.googleusercontent.com
+            - name: SMTP_USER
+              value: jafinjahfar@windermind.com
+            - name: GOOGLE_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google
+                  key: clientSecret
+            - name: GOOGLE_OAUTH_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: google
+                  key: refreshToken
+            - name: SERVICE_NAME
+              value: notifications
+          ports:
+            - containerPort: 3000

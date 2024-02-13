@@ -8,7 +8,7 @@ ENV SERVICE_NAME=${SERVICE_NAME}
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY tsconfig.json tsconfig.json
 COPY nest-cli.json nest-cli.json
@@ -33,7 +33,7 @@ ENV SERVICE_NAME=${SERVICE_NAME}
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json ./
 COPY pnpm-lock.yaml ./
 
 RUN npm install -g pnpm

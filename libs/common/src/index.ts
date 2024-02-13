@@ -6,3 +6,4 @@ export * from './common';
 export * from './dto';
 export * from './decorators';
 export * from './models';
+export * from './health';

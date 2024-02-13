@@ -5,6 +5,7 @@ import {
   ConfigModule,
   ConfigService,
   DatabaseModule,
+  HealthModule,
   LoggerModule,
   PAYMENT_SERVICE,
 } from '@app/common';
@@ -53,6 +54,7 @@ import { AUTH_SERVICE } from '@app/common';
         },
       },
     ]),
+    HealthModule,
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService, ReservationsRepository],

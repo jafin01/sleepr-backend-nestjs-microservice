@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reservations
+  name: reservations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservations
+  template:
+    metadata:
+      labels:
+        app: reservations
+    spec:
+      imagePullSecrets:
+        - name: gcr-json-key
+      containers:
+        - image: asia-south1-docker.pkg.dev/sleepr-413506/reservations/production:latest
+          name: reservations
+          imagePullPolicy: Never
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: connectionString
+            - name: MONGODB_DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: databaseName
+            - name: SERVICE_NAME
+              value: reservations
+            - name: HTTP_PORT
+              value: '3004'
+            - name: AUTH_HOST
+              value: auth-tcp
+            - name: AUTH_PORT
+              value: '3002'
+            - name: PAYMENTS_HOST
+              value: payments
+            - name: PAYMENTS_PORT
+              value: '3001'
+          ports:
+            - containerPort: 3004

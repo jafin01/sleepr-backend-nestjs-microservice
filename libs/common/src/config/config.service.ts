@@ -52,12 +52,10 @@ export class ConfigService {
     const schema = Joi.object({
       SERVICE_NAME: Joi.string().required(),
       HTTP_PORT: Joi.number().required(),
-      HTTP_TIMEOUT: Joi.number().default(1000),
       AUTH_PORT: Joi.number().required(),
       AUTH_HOST: Joi.string().required(),
       PAYMENTS_PORT: Joi.number().required(),
       PAYMENTS_HOST: Joi.string().required(),
-      HTTP_HOST: Joi.string().required(),
       MONGODB_URI: Joi.string().required(),
       MONGODB_DATABASE_NAME: Joi.string().default('local'),
     });
@@ -72,8 +70,6 @@ export class ConfigService {
 
     return {
       httpPort: parseInt(envVars.HTTP_PORT, 10),
-      httpHost: envVars.HTTP_HOST,
-      httpTimeout: parseInt(envVars.HTTP_TIMEOUT, 10),
       authPort: parseInt(envVars.AUTH_PORT, 10),
       authHost: envVars.AUTH_HOST,
       paymentsPort: parseInt(envVars.PAYMENTS_PORT, 10),
@@ -92,8 +88,6 @@ export class ConfigService {
       SERVICE_NAME: Joi.string().required(),
       HTTP_PORT: Joi.number().required(),
       TCP_PORT: Joi.number().required(),
-      HTTP_TIMEOUT: Joi.number().default(1000),
-      HTTP_HOST: Joi.string().required(),
       JWT_SECRET: Joi.string().required(),
       JWT_EXPIRES_IN: Joi.string().required(),
       MONGODB_URI: Joi.string().required(),
@@ -110,9 +104,7 @@ export class ConfigService {
 
     return {
       httpPort: parseInt(value.HTTP_PORT, 10),
-      httpHost: value.HTTP_HOST,
       tcpPort: parseInt(value.TCP_PORT, 10),
-      httpTimeout: parseInt(value.HTTP_TIMEOUT, 10),
       jwt: {
         secret: value.JWT_SECRET,
         expiresIn: value.JWT_EXPIRES_IN,

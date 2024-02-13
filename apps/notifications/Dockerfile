@@ -30,7 +30,7 @@ ENV NODE_ENV=${NODE_ENV}
 ARG SERVICE_NAME=notifications
 ENV SERVICE_NAME=${SERVICE_NAME}
 
-WORKDIR /user/src/app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 COPY pnpm-lock.yaml ./

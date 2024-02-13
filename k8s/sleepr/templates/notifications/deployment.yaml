@@ -17,7 +17,6 @@ spec:
       containers:
         - image: asia-south1-docker.pkg.dev/sleepr-413506/notifications/production
           name: notifications
-          imagePullPolicy: Never
           env:
             - name: TCP_PORT
               value: '3000'

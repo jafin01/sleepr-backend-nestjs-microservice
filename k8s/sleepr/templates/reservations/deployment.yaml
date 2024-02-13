@@ -19,7 +19,6 @@ spec:
       containers:
         - image: asia-south1-docker.pkg.dev/sleepr-413506/reservations/production:latest
           name: reservations
-          imagePullPolicy: Never
           env:
             - name: MONGODB_URI
               valueFrom:

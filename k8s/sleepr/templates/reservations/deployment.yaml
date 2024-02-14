@@ -17,7 +17,7 @@ spec:
       imagePullSecrets:
         - name: gcr-json-key
       containers:
-        - image: asia-south1-docker.pkg.dev/sleepr-413506/reservations/production:latest
+        - image: 767397894065.dkr.ecr.us-east-1.amazonaws.com/reservations:latest
           name: reservations
           env:
             - name: MONGODB_URI

@@ -1,0 +1,50 @@
+services:
+  e2e:
+    build:
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./specs:/usr/src/app/specs
+    depends_on:
+      - reservations
+      - auth
+      - payments
+      - notifications
+      - mongo
+  mongo:
+    image: mongo
+  reservations:
+    image: 767397894065.dkr.ecr.us-east-1.amazonaws.com/reservations:latest
+    environment:
+      - NODE_ENV=production
+      - SERVICE_NAME=reservations
+    env_file:
+      - ../apps/reservations/.env.development.local
+    ports:
+      - '5050:5050'
+  auth:
+    image: 767397894065.dkr.ecr.us-east-1.amazonaws.com/auth:latest
+    environment:
+      - NODE_ENV=production
+      - SERVICE_NAME=auth
+    env_file:
+      - ../apps/auth/.env.development.local
+    ports:
+      - '5051:5051'
+  payments:
+    image: 767397894065.dkr.ecr.us-east-1.amazonaws.com/payments:latest
+    environment:
+      - NODE_ENV=production
+      - SERVICE_NAME=payments
+    env_file:
+      - ../apps/payments/.env.development.local
+    ports:
+      - '5053:5053'
+  notifications:
+    image: 767397894065.dkr.ecr.us-east-1.amazonaws.com/notifications:latest
+    environment:
+      - NODE_ENV=production
+      - SERVICE_NAME=notifications
+    env_file:
+      - ../apps/notifications/.env.development.local
+    ports:
+      - '5054:5054'

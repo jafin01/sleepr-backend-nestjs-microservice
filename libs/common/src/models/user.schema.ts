@@ -11,6 +11,9 @@ export class UserDocument extends AbstractSchema {
 
   @Prop()
   timestamps: Date;
+
+  @Prop()
+  roles?: string[];
 }
 
 export const userSchema = SchemaFactory.createForClass(UserDocument);
